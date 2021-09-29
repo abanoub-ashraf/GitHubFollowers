@@ -1,14 +1,54 @@
 import UIKit
 
+///
+/// - this scene delegate allows us to have two instances side by side of the same app
+///
+/// - before, we had that but they had to be two different apps
+///
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        window?.windowScene = windowScene
+        window?.rootViewController = createTabBar()
+        window?.makeKeyAndVisible()
+    }
+    
+    func createSearchNavigationController() -> UINavigationController {
+        let searchController = SearchController()
+        searchController.title = "title"
+        searchController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
+        
+        return UINavigationController(rootViewController: searchController)
+    }
+    
+    func createFavoritesNavigationController() -> UINavigationController {
+        let favoritesController = FavoritesListController()
+        favoritesController.title = "Favorites"
+        favoritesController.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+        
+        return UINavigationController(rootViewController: favoritesController)
+    }
+    
+    func createTabBar() -> UITabBarController {
+        let tabBar = UITabBarController()
+        
+        ///
+        /// changing the tint color here makes it app wide everywhere
+        ///
+        UITabBar.appearance().tintColor = .systemGreen
+        
+        tabBar.viewControllers = [
+            createSearchNavigationController(),
+            createFavoritesNavigationController()
+        ]
+        
+        return tabBar
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
