@@ -15,8 +15,40 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        window?.rootViewController = ViewController()
+        window?.rootViewController = createTabBar()
         window?.makeKeyAndVisible()
+    }
+    
+    func createSearchNavigationController() -> UINavigationController {
+        let searchController = SearchController()
+        searchController.title = "title"
+        searchController.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
+        
+        return UINavigationController(rootViewController: searchController)
+    }
+    
+    func createFavoritesNavigationController() -> UINavigationController {
+        let favoritesController = FavoritesListController()
+        favoritesController.title = "Favorites"
+        favoritesController.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
+        
+        return UINavigationController(rootViewController: favoritesController)
+    }
+    
+    func createTabBar() -> UITabBarController {
+        let tabBar = UITabBarController()
+        
+        ///
+        /// changing the tint color here makes it app wide everywhere
+        ///
+        UITabBar.appearance().tintColor = .systemGreen
+        
+        tabBar.viewControllers = [
+            createSearchNavigationController(),
+            createFavoritesNavigationController()
+        ]
+        
+        return tabBar
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
