@@ -2,6 +2,8 @@ import UIKit
 
 class GFButton: UIButton {
     
+    // MARK: - Init
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -27,6 +29,8 @@ class GFButton: UIButton {
         configure()
     }
     
+    // MARK: - Helper Functions
+
     private func configure() {
         layer.cornerRadius      = 10
         titleLabel?.textColor   = .white
