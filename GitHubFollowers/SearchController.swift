@@ -18,6 +18,7 @@ class SearchController: UIViewController {
         configureLogoImageView()
         configureTextField()
         configureCallToActionButton()
+        createDismissKeyboardTapGesture()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -30,6 +31,18 @@ class SearchController: UIViewController {
     }
     
     // MARK: - Helper Functions
+    
+    ///
+    /// dismiss the keyboard after it was opened because of the text field the user is typing in
+    ///
+    func createDismissKeyboardTapGesture() {
+        ///
+        /// the endEditing() function causes the view (or one of its embedded text fields)
+        /// to resign the first responder status, meaning hide the keyboard
+        ///
+        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        view.addGestureRecognizer(tap)
+    }
 
     func configureLogoImageView() {
         view.addSubview(logoImageView)
