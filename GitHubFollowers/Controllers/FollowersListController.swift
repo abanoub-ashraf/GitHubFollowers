@@ -15,8 +15,8 @@ class FollowersListController: UIViewController {
         ///
         /// set this to false cause it is set to true on the previous screen
         ///
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.isNavigationBarHidden             = false
+        navigationController?.navigationBar.prefersLargeTitles  = true
     }
 
 }
