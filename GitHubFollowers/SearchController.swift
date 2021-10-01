@@ -8,6 +8,14 @@ class SearchController: UIViewController {
     let usernameTextField   = GFTextField()
     let callToActionButton  = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
     
+    ///
+    /// this variable will return true  or false based on wether the text
+    /// inside the username textfield is empty or not
+    ///
+    var isUsernameEntered: Bool {
+        return !usernameTextField.text!.isEmpty
+    }
+    
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
@@ -35,10 +43,17 @@ class SearchController: UIViewController {
     
     // MARK: - Helper Functions
     
-    ///
-    /// <# Comment #>
-    ///
     @objc func pushFollowersListControllerOnScreen() {
+        ///
+        /// - if this computed property is true, keep going to the rest of this function body
+        ///
+        /// - if not print the error then stop excution
+        ///
+        guard isUsernameEntered else {
+            print("No username")
+            return
+        }
+        
         let followersController         = FollowersListController()
         
         followersController.username    = usernameTextField.text
