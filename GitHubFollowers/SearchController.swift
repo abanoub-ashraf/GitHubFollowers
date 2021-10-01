@@ -25,12 +25,27 @@ class SearchController: UIViewController {
         super.viewWillAppear(animated)
         
         ///
-        /// hide the navigation bar only on this screen
+        /// - hide the navigation bar only on this screen
+        ///
+        /// - since this is set to hidden, we have to set it to false on the next screen
+        ///   we wanna go to otherwise it will be hidden there too
         ///
         navigationController?.isNavigationBarHidden = true
     }
     
     // MARK: - Helper Functions
+    
+    ///
+    /// <# Comment #>
+    ///
+    @objc func pushFollowersListControllerOnScreen() {
+        let followersController         = FollowersListController()
+        
+        followersController.username    = usernameTextField.text
+        followersController.title       = usernameTextField.text
+        
+        navigationController?.pushViewController(followersController, animated: true)
+    }
     
     ///
     /// dismiss the keyboard after it was opened because of the text field the user is typing in
@@ -61,6 +76,12 @@ class SearchController: UIViewController {
     func configureTextField() {
         view.addSubview(usernameTextField)
         
+        ///
+        /// the functions of the UITextFieldDelegate runs based on the actions
+        /// that happens to this text field
+        ///
+        usernameTextField.delegate = self
+        
         NSLayoutConstraint.activate([
             usernameTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 48),
             usernameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
@@ -72,12 +93,33 @@ class SearchController: UIViewController {
     func configureCallToActionButton() {
         view.addSubview(callToActionButton)
         
+        callToActionButton.addTarget(
+            self,
+            action: #selector(pushFollowersListControllerOnScreen),
+            for: .touchUpInside
+        )
+        
         NSLayoutConstraint.activate([
             callToActionButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
             callToActionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 50),
             callToActionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -50),
             callToActionButton.heightAnchor.constraint(equalToConstant: 50)
         ])
+    }
+    
+}
+
+///
+/// listen to the usernameTextField and fire the delegate functions based on that
+///
+extension SearchController: UITextFieldDelegate {
+    
+    ///
+    /// specify what should happen when the return key of the keyboard is clicked
+    ///
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        pushFollowersListControllerOnScreen()
+        return true
     }
     
 }

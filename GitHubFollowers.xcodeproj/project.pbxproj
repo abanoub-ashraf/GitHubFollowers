@@ -16,6 +16,7 @@
 		2ED5E8FB27061D1800DDF688 /* GFButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED5E8FA27061D1800DDF688 /* GFButton.swift */; };
 		2ED5E8FE270620C900DDF688 /* GFTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED5E8FD270620C900DDF688 /* GFTextField.swift */; };
 		2ED5E90127062EF500DDF688 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED5E90027062EF500DDF688 /* AppConstants.swift */; };
+		2ED5E9042706393800DDF688 /* FollowersListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED5E9032706393800DDF688 /* FollowersListController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		2ED5E8FA27061D1800DDF688 /* GFButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFButton.swift; sourceTree = "<group>"; };
 		2ED5E8FD270620C900DDF688 /* GFTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFTextField.swift; sourceTree = "<group>"; };
 		2ED5E90027062EF500DDF688 /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		2ED5E9032706393800DDF688 /* FollowersListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersListController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				2ED5E8F427051CD600DDF688 /* FavoritesListController.swift */,
 				2ED5E8FD270620C900DDF688 /* GFTextField.swift */,
 				2ED5E90027062EF500DDF688 /* AppConstants.swift */,
+				2ED5E9032706393800DDF688 /* FollowersListController.swift */,
 			);
 			path = GitHubFollowers;
 			sourceTree = "<group>";
@@ -150,6 +153,7 @@
 				2ED5E8FB27061D1800DDF688 /* GFButton.swift in Sources */,
 				2ED5E8F227051C9400DDF688 /* SearchController.swift in Sources */,
 				2ED5E90127062EF500DDF688 /* AppConstants.swift in Sources */,
+				2ED5E9042706393800DDF688 /* FollowersListController.swift in Sources */,
 				2ED5E8DB2705115400DDF688 /* SceneDelegate.swift in Sources */,
 				2ED5E8F527051CD600DDF688 /* FavoritesListController.swift in Sources */,
 			);

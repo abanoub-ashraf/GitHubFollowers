@@ -42,6 +42,17 @@ class GFTextField: UITextField {
         ///
         autocorrectionType          = .no
         
+        ///
+        /// - the keyboard is connected to the textfield in ios
+        ///
+        /// - this line determine the type of the keyboard i wanna use for each text field
+        ///
+        keyboardType                = .default
+        ///
+        /// specify the title of the return key of the keyboard
+        ///
+        returnKeyType               = .go
+        
         placeholder                 = "Enter a username..."
     }
     
