@@ -38,7 +38,7 @@ class SearchController: UIViewController {
         /// - since this is set to hidden, we have to set it to false on the next screen
         ///   we wanna go to otherwise it will be hidden there too
         ///
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     // MARK: - Helper Functions
