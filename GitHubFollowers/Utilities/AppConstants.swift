@@ -8,4 +8,8 @@ struct AppConstants {
         static let avatarImage  = UIImage(named: "avatar")
     }
     
+    struct API {
+        static let baseUrl = "https://api.github.com"
+    }
+    
 }

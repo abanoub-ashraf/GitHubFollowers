@@ -32,12 +32,12 @@ class GFButton: UIButton {
     // MARK: - Helper Functions
 
     private func configure() {
-        layer.cornerRadius      = 10
-        titleLabel?.textColor   = .white
+        layer.cornerRadius  = 10
         ///
         /// preferredFont to mke the font size adjust to the available space
         ///
-        titleLabel?.font        = UIFont.preferredFont(forTextStyle: .headline)
+        titleLabel?.font    = UIFont.preferredFont(forTextStyle: .headline)
+        setTitleColor(.white, for: .normal)
         ///
         /// to be able to use the auto layout in code
         ///
