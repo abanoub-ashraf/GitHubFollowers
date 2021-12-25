@@ -2,7 +2,7 @@ import UIKit
 
 class GFTextField: UITextField {
     
-    // MARK: - Init
+    // MARK: - Initializer
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,7 +41,6 @@ class GFTextField: UITextField {
         /// to disable auto correction inside this textfield
         ///
         autocorrectionType          = .no
-        
         ///
         /// - the keyboard is connected to the textfield in ios
         ///
@@ -55,5 +54,4 @@ class GFTextField: UITextField {
         
         placeholder                 = "Enter a username..."
     }
-    
 }

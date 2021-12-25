@@ -39,6 +39,7 @@ class GFTitleLabel: UILabel {
         /// put ... after the text if it was too long
         ///
         lineBreakMode               = .byTruncatingTail
+        
         translatesAutoresizingMaskIntoConstraints = false
     }
 

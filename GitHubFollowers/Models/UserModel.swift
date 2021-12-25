@@ -1,7 +1,6 @@
 import UIKit
 
 struct UserModel: Codable {
-
     var login: String
     var avatarUrl: String
     var name: String?
@@ -13,5 +12,4 @@ struct UserModel: Codable {
     var following: Int
     var followers: Int
     var createdAt: String
-    
 }

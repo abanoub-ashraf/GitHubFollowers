@@ -26,6 +26,7 @@ class GFBodyLabel: UILabel {
     
     private func configure() {
         textColor                   = .secondaryLabel
+        
         font                        = UIFont.preferredFont(forTextStyle: .body)
         ///
         /// to shrink the font size if the text is too much
@@ -39,6 +40,7 @@ class GFBodyLabel: UILabel {
         /// Wrapping occurs at word boundaries, unless the word doesn’t fit on a single line
         ///
         lineBreakMode               = .byWordWrapping
+        
         translatesAutoresizingMaskIntoConstraints = false
     }
 
