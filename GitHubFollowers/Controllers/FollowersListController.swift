@@ -6,14 +6,16 @@ class FollowersListController: UIViewController {
 
     var username: String!
     
+    // MARK: - UI
+
+    var collectionView: UICollectionView!
+    
     // MARK: - LifeCycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
-        navigationController?.navigationBar.prefersLargeTitles = true
-        
+        configureUI()
         getFollowersFromServer()
     }
     
@@ -42,5 +44,21 @@ class FollowersListController: UIViewController {
                     )
             }
         }
+    }
+    
+    private func configureUI() {
+        view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        configureCollectionView()
+    }
+    
+    func configureCollectionView() {
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewFlowLayout())
+        
+        view.addSubview(collectionView)
+        
+        collectionView.backgroundColor = .systemPink
+        collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
     }
 }
