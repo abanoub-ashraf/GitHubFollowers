@@ -102,9 +102,12 @@ class FollowersListController: UIViewController {
             collectionViewLayout: UIHelper.createThreeColumnFlowLayout(in: view)
         )
 
+        collectionView.backgroundColor = .systemBackground
+        
+        collectionView.showsVerticalScrollIndicator = false
+
         view.addSubview(collectionView)
 
-        collectionView.backgroundColor = .systemBackground
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
     }
 

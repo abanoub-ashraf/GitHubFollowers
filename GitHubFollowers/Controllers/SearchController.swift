@@ -92,7 +92,7 @@ class SearchController: UIViewController {
         view.addSubview(logoImageView)
         
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.image = AppConstants.AppAssets.logo
+        logoImageView.image = AppAssets.logo
         
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),

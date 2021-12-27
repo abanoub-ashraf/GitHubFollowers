@@ -1,10 +1,17 @@
-import Foundation
+import UIKit
 
 class NetworkManager {
     
     // MARK: - Properties
 
     static let shared = NetworkManager()
+    
+    ///
+    /// we wil use this to download the image of each follower then store it in the cache if
+    /// we will scroll back up again in the collection view so the images that was downloaded at first
+    /// doesn't get downloaded again over and over as we scroll up and down
+    ///
+    let cache = NSCache<NSString, UIImage>()
     
     // MARK: - Initializer
 
