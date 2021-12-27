@@ -17,10 +17,10 @@ class GFAvatarImageView: UIImageView {
     // MARK: - Helper Functions
     
     private func configure() {
+        translatesAutoresizingMaskIntoConstraints = false
+        
         layer.cornerRadius  = 16
         clipsToBounds       = true
         image               = AppConstants.AppAssets.avatarImage
-        
-        translatesAutoresizingMaskIntoConstraints = false
     }
 }
