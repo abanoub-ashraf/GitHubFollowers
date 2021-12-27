@@ -53,7 +53,27 @@ class FollowersListController: UIViewController {
     // MARK: - Helper Functions
 
     private func getFollowersFromServer() {
-        NetworkManager.shared.getFollowers(for: username, page: 1) { result in
+        ///
+        /// - ARC: Automatic Reference Counting
+        ///
+        /// - if i created an object from a class then the reference counting of that object in memory
+        ///   is 1, if i made that object nil, then the reference counting now is 0 and that object
+        ///   gets deallocated from the memory
+        ///
+        /// - if i have a developer object that has a machine object and the machine object has a developer
+        ///   object as well then tha's a strong reference between the developer and the machine classes,
+        ///   the reference counting for each one of them is 2, one for the object itself and one for
+        ///   it inside the other class
+        ///
+        /// - the solution for that strong reference is to make one of the objects inside the other class
+        ///   weak var, which means weak reference
+        ///
+        /// - in this api call there is a strong reference between the network manager and the view controller
+        ///   so we need to use weak self to avoid that string reference
+        ///
+        NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
                 case .success(let followers):
                     self.followers = followers
@@ -79,33 +99,13 @@ class FollowersListController: UIViewController {
     func configureCollectionView() {
         collectionView = UICollectionView(
             frame: view.bounds,
-            collectionViewLayout: createThreeColumnFlowLayout()
+            collectionViewLayout: UIHelper.createThreeColumnFlowLayout(in: view)
         )
 
         view.addSubview(collectionView)
 
         collectionView.backgroundColor = .systemBackground
         collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
-    }
-
-    ///
-    /// - setting up the layout of the collection view and its items
-    ///
-    /// - each item's width will be the entire view - the padding on both sides - the 2 item spacing
-    ///   in the middle of the columns
-    ///
-    func createThreeColumnFlowLayout() -> UICollectionViewFlowLayout {
-        let width                       = view.bounds.width
-        let padding: CGFloat            = 12
-        let minimumItemSpacing: CGFloat = 10
-        let availableWidth              = width - (padding * 2) - (minimumItemSpacing * 2)
-        let itemWidth                   = availableWidth / 3
-
-        let flowLayout                  = UICollectionViewFlowLayout()
-        flowLayout.sectionInset         = UIEdgeInsets(top: padding, left: padding, bottom: padding, right: padding)
-        flowLayout.itemSize             = CGSize(width: itemWidth, height: itemWidth + 40)
-
-        return flowLayout
     }
 
     // MARK: - DiffableDataSource Methods
