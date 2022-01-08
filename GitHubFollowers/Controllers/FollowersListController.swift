@@ -48,9 +48,9 @@ class FollowersListController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getFollowersFromServer(username: username, page: page)
         configureUI()
         configureDataSource()
+        getFollowersFromServer(username: username, page: page)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,6 +65,8 @@ class FollowersListController: UIViewController {
     // MARK: - Helper Functions
 
     private func getFollowersFromServer(username: String, page: Int) {
+        showLoadingView()
+        
         ///
         /// - ARC: Automatic Reference Counting
         ///
@@ -85,6 +87,8 @@ class FollowersListController: UIViewController {
         ///
         NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
             guard let self = self else { return }
+            
+            self.dismissLoadingView()
             
             switch result {
                 case .success(let followers):
