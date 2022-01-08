@@ -13,9 +13,21 @@ class FollowersListController: UIViewController {
 
     // MARK: - Properties
 
+    var followers: [FollowerModel] = []
     var username: String!
     
-    var followers: [FollowerModel] = []
+    ///
+    /// this variable is for getting specific amount of followers per page
+    /// every time we scroll down
+    ///
+    var page = 1
+    
+    ///
+    /// this variable is for pagination, it strts as true then we set it to false
+    /// when the amout of data we get from the api is less than 100 which means
+    /// it is the last data the api has and there is no more
+    ///
+    var hasMoreFollowers = true
     
     ///
     /// - DiffableDataSource gives a snapshot of the data, then if the data changes
@@ -36,8 +48,8 @@ class FollowersListController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        getFollowersFromServer(username: username, page: page)
         configureUI()
-        getFollowersFromServer()
         configureDataSource()
     }
     
@@ -52,7 +64,7 @@ class FollowersListController: UIViewController {
     
     // MARK: - Helper Functions
 
-    private func getFollowersFromServer() {
+    private func getFollowersFromServer(username: String, page: Int) {
         ///
         /// - ARC: Automatic Reference Counting
         ///
@@ -71,12 +83,22 @@ class FollowersListController: UIViewController {
         /// - in this api call there is a strong reference between the network manager and the view controller
         ///   so we need to use weak self to avoid that string reference
         ///
-        NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] result in
+        NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
                 case .success(let followers):
-                    self.followers = followers
+                    ///
+                    /// - if the followers we got from the api is less than 100 then this is the last data
+                    ///   we can get from the api and there is no more followers to get
+                    ///
+                    /// - so flip this variable hasMoreFollowers to false
+                    ///
+                    if followers.count < 100 {
+                        self.hasMoreFollowers = false
+                    }
+                    
+                    self.followers.append(contentsOf: followers)
                     self.updateData()
                     
                 case .failure(let error):
@@ -103,12 +125,15 @@ class FollowersListController: UIViewController {
         )
 
         collectionView.backgroundColor = .systemBackground
-        
+        collectionView.delegate = self
         collectionView.showsVerticalScrollIndicator = false
 
         view.addSubview(collectionView)
 
-        collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseID)
+        collectionView.register(
+            FollowerCell.self,
+            forCellWithReuseIdentifier: FollowerCell.reuseID
+        )
     }
 
     // MARK: - DiffableDataSource Methods
@@ -135,7 +160,41 @@ class FollowersListController: UIViewController {
         snapshot.appendItems(followers)
 
         DispatchQueue.main.async {
-            self.dataSource.apply(snapshot, animatingDifferences: true)
+            self.dataSource.apply(
+                snapshot,
+                animatingDifferences: true
+            )
+        }
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension FollowersListController: UICollectionViewDelegate {
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        ///
+        /// this is how far we scrolled down in the screen
+        ///
+        let offsetY         = scrollView.contentOffset.y
+        ///
+        /// this is the height of the entire scrollview even the hidden part as well
+        ///
+        let contentHeight   = scrollView.contentSize.height
+        ///
+        /// this is the height of the device's screen
+        ///
+        let height          = scrollView.frame.size.height
+        
+        ///
+        /// get the followers for the next page if the amount we did scroll is bigger than
+        /// (the whole scrollview content - the current height of the screen)
+        ///
+        if offsetY > contentHeight - height {
+            guard hasMoreFollowers else { return }
+            
+            page += 1
+            getFollowersFromServer(username: username, page: page)
         }
     }
 }
