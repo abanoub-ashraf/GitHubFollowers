@@ -102,7 +102,32 @@ class FollowersListController: UIViewController {
                         self.hasMoreFollowers = false
                     }
                     
+                    ///
+                    /// this is to ensure the new paginated data doesn't override the old data that
+                    /// we already got from the previous pages above
+                    ///
                     self.followers.append(contentsOf: followers)
+                    
+                    ///
+                    /// - if we got no followers from the api then display the empty state view
+                    ///
+                    /// - do this check after fetching data from the api is done to ensure there's no data
+                    ///
+                    if self.followers.isEmpty {
+                        DispatchQueue.main.async {
+                            self.showEmptyStateView(
+                                with: AppConstants.noFollowersMessage,
+                                in: self.view
+                            )
+                        }
+                        
+                        ///
+                        /// if the followers is empty then we don't wanna stop right here and
+                        /// don't call the updateData() function
+                        ///
+                        return
+                    }
+                    
                     self.updateData()
                     
                 case .failure(let error):

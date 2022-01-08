@@ -14,4 +14,7 @@ struct AppConstants {
         static let followerCellIdentifier = "FollowerCell"
     }
     
+    // MARK: - Strings
+    
+    static let noFollowersMessage = "This user doesn't have any Followers, Go follow them 😄"
 }

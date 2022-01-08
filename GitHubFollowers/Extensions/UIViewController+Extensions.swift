@@ -54,4 +54,14 @@ extension UIViewController {
             containerView = nil
         }
     }
+    
+    ///
+    /// show the empty state view anywhere we have no data with a custom message
+    ///
+    func showEmptyStateView(with message: String, in view: UIView) {
+        let emptyStateView = GFEmptyStateView(message: message)
+        
+        emptyStateView.frame = view.bounds
+        view.addSubview(emptyStateView)
+    }
 }
