@@ -6,7 +6,12 @@ class SearchController: UIViewController {
 
     let logoImageView       = UIImageView()
     let usernameTextField   = GFTextField()
-    let callToActionButton  = GFButton(backgroundColor: .systemGreen, title: "Get Followers")
+    let callToActionButton  = GFButton(
+        backgroundColor: .systemGreen,
+        title: "Get Followers"
+    )
+    
+    // MARK: - Properties
     
     ///
     /// this variable will return true  or false based on wether the text
@@ -75,7 +80,11 @@ class SearchController: UIViewController {
         /// the endEditing() function causes the view (or one of its embedded text fields)
         /// to resign the first responder status, meaning hide the keyboard
         ///
-        let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing(_:)))
+        let tap = UITapGestureRecognizer(
+            target: self.view,
+            action: #selector(UIView.endEditing(_:))
+        )
+        
         view.addGestureRecognizer(tap)
     }
 
@@ -83,7 +92,7 @@ class SearchController: UIViewController {
         view.addSubview(logoImageView)
         
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        logoImageView.image = AppConstants.AppAssets.logo
+        logoImageView.image = AppAssets.logo
         
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
@@ -129,6 +138,8 @@ class SearchController: UIViewController {
     
 }
 
+// MARK: - UITextFieldDelegate Methods
+
 ///
 /// listen to the usernameTextField and fire the delegate functions based on that
 ///
@@ -141,5 +152,4 @@ extension SearchController: UITextFieldDelegate {
         pushFollowersListControllerOnScreen()
         return true
     }
-    
 }

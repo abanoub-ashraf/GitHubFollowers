@@ -37,6 +37,7 @@ class GFButton: UIButton {
         /// preferredFont to mke the font size adjust to the available space
         ///
         titleLabel?.font    = UIFont.preferredFont(forTextStyle: .headline)
+        
         setTitleColor(.white, for: .normal)
         ///
         /// to be able to use the auto layout in code

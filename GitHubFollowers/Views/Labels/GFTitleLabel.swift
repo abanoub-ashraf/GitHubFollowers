@@ -1,12 +1,12 @@
 import UIKit
 
-class GFBodyLabel: UILabel {
+class GFTitleLabel: UILabel {
 
     // MARK: - Initializer
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+    
         configure()
     }
     
@@ -14,19 +14,19 @@ class GFBodyLabel: UILabel {
         fatalError()
     }
     
-    init(textAlignment: NSTextAlignment) {
+    init(textAlignment: NSTextAlignment, fontSize: CGFloat) {
         super.init(frame: .zero)
         
-        self.textAlignment = textAlignment
-        
+        self.textAlignment  = textAlignment
+        self.font           = UIFont.systemFont(ofSize: fontSize, weight: .bold)
+    
         configure()
     }
     
     // MARK: - Helper Functions
-    
+
     private func configure() {
-        textColor                   = .secondaryLabel
-        font                        = UIFont.preferredFont(forTextStyle: .body)
+        textColor                   = .label
         ///
         /// to shrink the font size if the text is too much
         ///
@@ -34,11 +34,12 @@ class GFBodyLabel: UILabel {
         ///
         /// how much minimum the shrinking above should have
         ///
-        minimumScaleFactor          = 0.75
+        minimumScaleFactor          = 0.9
         ///
-        /// Wrapping occurs at word boundaries, unless the word doesn’t fit on a single line
+        /// put ... after the text if it was too long
         ///
-        lineBreakMode               = .byWordWrapping
+        lineBreakMode               = .byTruncatingTail
+        
         translatesAutoresizingMaskIntoConstraints = false
     }
 

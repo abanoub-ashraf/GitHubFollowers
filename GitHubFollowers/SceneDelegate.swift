@@ -14,6 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
+        
         window?.windowScene = windowScene
         window?.rootViewController = createTabBar()
         window?.makeKeyAndVisible()
@@ -21,6 +22,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         configureNavigationBar()
     }
     
+    ///
+    /// of the controller of the tab bar and it will be a navigation controller
+    ///
     func createSearchNavigationController() -> UINavigationController {
         let searchController            = SearchController()
         searchController.title          = "Search"
@@ -29,6 +33,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return UINavigationController(rootViewController: searchController)
     }
     
+    ///
+    /// of the controller of the tab bar and it will be a navigation controller
+    ///
     func createFavoritesNavigationController() -> UINavigationController {
         let favoritesController         = FavoritesListController()
         favoritesController.title       = "Favorites"
@@ -37,6 +44,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return UINavigationController(rootViewController: favoritesController)
     }
     
+    ///
+    /// create a tab bar that wil be the starting point of the app
+    ///
     func createTabBar() -> UITabBarController {
         let tabBar = UITabBarController()
         
@@ -53,6 +63,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return tabBar
     }
     
+    ///
+    /// configure the navigation bar globally in the app
+    ///
     func configureNavigationBar() {
         UINavigationBar.appearance().tintColor = .systemGreen
     }
