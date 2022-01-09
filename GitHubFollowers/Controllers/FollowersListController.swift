@@ -14,6 +14,7 @@ class FollowersListController: UIViewController {
     // MARK: - Properties
 
     var followers: [FollowerModel] = []
+    var filteredFollowers: [FollowerModel] = []
     var username: String!
     
     ///
@@ -128,7 +129,7 @@ class FollowersListController: UIViewController {
                         return
                     }
                     
-                    self.updateData()
+                    self.updateData(on: self.followers)
                     
                 case .failure(let error):
                     self.presentGFAlertOnMainThread(
@@ -145,6 +146,7 @@ class FollowersListController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
 
         configureCollectionView()
+        configureSearchController()
     }
     
     func configureCollectionView() {
@@ -182,7 +184,7 @@ class FollowersListController: UIViewController {
         )
     }
 
-    func updateData() {
+    func updateData(on followers: [FollowerModel]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, FollowerModel>()
 
         snapshot.appendSections([.main])
@@ -194,6 +196,25 @@ class FollowersListController: UIViewController {
                 animatingDifferences: true
             )
         }
+    }
+    
+    ///
+    /// - configure the search bar on top
+    ///
+    /// - searchController.searchResultsUpdater = self is the
+    ///   UISearchResultsUpdating delegate confirmation
+    ///
+    /// - searchController.searchBar.delegate = self is the
+    ///   UISearchBarDelegate delegate confirmation
+    ///
+    func configureSearchController() {
+        let searchController                                    = UISearchController()
+        searchController.searchResultsUpdater                   = self
+        searchController.searchBar.delegate                     = self
+        searchController.searchBar.placeholder                  = "Search for a username..."
+        searchController.obscuresBackgroundDuringPresentation   = false
+        navigationItem.searchController                         = searchController
+        navigationItem.hidesSearchBarWhenScrolling              = false
     }
 }
 
@@ -225,5 +246,44 @@ extension FollowersListController: UICollectionViewDelegate {
             page += 1
             getFollowersFromServer(username: username, page: page)
         }
+    }
+}
+
+// MARK: - UISearchResultsUpdating & UISearchBarDelegate
+
+extension FollowersListController: UISearchResultsUpdating, UISearchBarDelegate {
+    
+    ///
+    /// this gets called every time i type a letter in the search bar
+    ///
+    func updateSearchResults(for searchController: UISearchController) {
+        ///
+        /// if the search bar has a text and that text is not empty, continue
+        /// else stop right here
+        ///
+        guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
+        
+        ///
+        /// get all the followers that their login string contains the filter string
+        /// and make an array out of them
+        ///
+        filteredFollowers = followers.filter {
+            $0.login
+                .lowercased()
+                .contains(filter.lowercased())
+        }
+        
+        ///
+        /// now update the collection view
+        ///
+        updateData(on: filteredFollowers)
+    }
+    
+    ///
+    /// when the cancel button is clicked we wanna load
+    /// the original list of followers
+    ///
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        updateData(on: followers)
     }
 }
