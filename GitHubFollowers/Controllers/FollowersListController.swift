@@ -18,6 +18,13 @@ class FollowersListController: UIViewController {
     var username: String!
     
     ///
+    /// we will use this variable to determine when we click on a follower cell and
+    /// we wanna go to the details page of that follower we wanna know which array
+    /// we will load the data of that follower from
+    ///
+    var isSearching = false
+    
+    ///
     /// this variable is for getting specific amount of followers per page
     /// every time we scroll down
     ///
@@ -247,6 +254,20 @@ extension FollowersListController: UICollectionViewDelegate {
             getFollowersFromServer(username: username, page: page)
         }
     }
+
+    ///
+    /// go to the details page of the follower item we tapped on
+    ///
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let activeArray             = isSearching ? filteredFollowers : followers
+        let follower                = activeArray[indexPath.item]
+        
+        let userInfoController      = UserInfoController()
+        userInfoController.username = follower.login
+        let navController           = UINavigationController(rootViewController: userInfoController)
+        
+        present(navController, animated: true)
+    }
 }
 
 // MARK: - UISearchResultsUpdating & UISearchBarDelegate
@@ -262,6 +283,11 @@ extension FollowersListController: UISearchResultsUpdating, UISearchBarDelegate 
         /// else stop right here
         ///
         guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
+        
+        ///
+        /// to indicate that we are searching
+        ///
+        isSearching = true
         
         ///
         /// get all the followers that their login string contains the filter string
@@ -284,6 +310,10 @@ extension FollowersListController: UISearchResultsUpdating, UISearchBarDelegate 
     /// the original list of followers
     ///
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        ///
+        /// to indicate that we stopped searching
+        ///
+        isSearching = false
         updateData(on: followers)
     }
 }

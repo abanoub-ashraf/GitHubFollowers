@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2E0C250E2777BA820016C418 /* FollowerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0C250D2777BA820016C418 /* FollowerCell.swift */; };
 		2E0C25102777BB8F0016C418 /* GFAvatarImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0C250F2777BB8F0016C418 /* GFAvatarImageView.swift */; };
+		2E39EE90278AF13A00618481 /* UserInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E39EE8F278AF13A00618481 /* UserInfoController.swift */; };
 		2E63C39627076B2A006AD76D /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E63C39527076B2A006AD76D /* String+Extensions.swift */; };
 		2E63C39927076E38006AD76D /* GFAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E63C39827076E38006AD76D /* GFAlertController.swift */; };
 		2E63C39C27076E76006AD76D /* GFTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E63C39B27076E76006AD76D /* GFTitleLabel.swift */; };
@@ -36,6 +37,7 @@
 /* Begin PBXFileReference section */
 		2E0C250D2777BA820016C418 /* FollowerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowerCell.swift; sourceTree = "<group>"; };
 		2E0C250F2777BB8F0016C418 /* GFAvatarImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFAvatarImageView.swift; sourceTree = "<group>"; };
+		2E39EE8F278AF13A00618481 /* UserInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoController.swift; sourceTree = "<group>"; };
 		2E63C39527076B2A006AD76D /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		2E63C39827076E38006AD76D /* GFAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFAlertController.swift; sourceTree = "<group>"; };
 		2E63C39B27076E76006AD76D /* GFTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFTitleLabel.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				2ED5E8F127051C9400DDF688 /* SearchController.swift */,
 				2ED5E8F427051CD600DDF688 /* FavoritesListController.swift */,
 				2ED5E9032706393800DDF688 /* FollowersListController.swift */,
+				2E39EE8F278AF13A00618481 /* UserInfoController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 				2E708524277A5E7300633750 /* AppAssets.swift in Sources */,
 				2E63C3C02708AAAF006AD76D /* NetworkManager.swift in Sources */,
 				2E63C39C27076E76006AD76D /* GFTitleLabel.swift in Sources */,
+				2E39EE90278AF13A00618481 /* UserInfoController.swift in Sources */,
 				2E63C3C42708B71E006AD76D /* ErrorMessage.swift in Sources */,
 				2E63C39627076B2A006AD76D /* String+Extensions.swift in Sources */,
 				2ED5E8F227051C9400DDF688 /* SearchController.swift in Sources */,
