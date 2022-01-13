@@ -17,4 +17,8 @@ struct AppConstants {
     // MARK: - Strings
     
     static let noFollowersMessage = "This user doesn't have any Followers, Go follow them 😄"
+    
+    // MARK: - SFSymbols
+    
+    static let locationSymbol = "mappin.and.ellipse"
 }
