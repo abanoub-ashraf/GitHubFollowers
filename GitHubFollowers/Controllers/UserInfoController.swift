@@ -1,4 +1,14 @@
 import UIKit
+import SafariServices
+
+///
+/// this protocol will establish a connection between this parent controller
+/// and the 2 child controllers through their buttons
+///
+protocol UserInfoControllerDelegate: AnyObject {
+    func didTapGithubProfile(for user: UserModel)
+    func didTapGetFollowers(for user: UserModel)
+}
 
 class UserInfoController: UIViewController {
     
@@ -98,33 +108,44 @@ class UserInfoController: UIViewController {
     }
     
     private func populateUIFromServer(userData: UserModel) {
+        let userInfoHeaderController            = GFUserInfoHeaderController(user: userData)
+        
         ///
-        /// this ui stuff should happen in the main thread
+        /// confirm this class to be the one to respond to the execution of
+        /// the functions of the delegate protocol above
         ///
-        DispatchQueue.main.async {
-            ///
-            /// we will use the user info object we got from the server to populate
-            /// the user info header controller then add that header controller to
-            /// the header view we have in this current view controller
-            ///
-            self.add(
-                childViewController: GFUserInfoHeaderController(user: userData),
-                to: self.headerView
-            )
-            
-            self.add(
-                childViewController: GFRepoItemController(user: userData),
-                to: self.itemViewOne
-            )
-            
-            self.add(
-                childViewController: GFFollowerItemController(user: userData),
-                to: self.itemViewTwo
-            )
-            
-            self.dateLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-            self.dateLabel.text = "On Github since: \(userData.createdAt.convertToDisplayFormat())"
-        }
+        let repoItemChildController             = GFRepoItemController(user: userData)
+        repoItemChildController.delegate        = self
+        
+        ///
+        /// confirm this class to be the one to respond to the execution of
+        /// the functions of the delegate protocol above
+        ///
+        let followerItemChildController         = GFFollowerItemController(user: userData)
+        followerItemChildController.delegate    = self
+        
+        ///
+        /// we will use the user info object we got from the server to populate
+        /// the user info header controller then add that header controller to
+        /// the header view we have in this current view controller
+        ///
+        self.add(
+            childViewController: userInfoHeaderController,
+            to: self.headerView
+        )
+        
+        self.add(
+            childViewController: repoItemChildController,
+            to: self.itemViewOne
+        )
+        
+        self.add(
+            childViewController: followerItemChildController,
+            to: self.itemViewTwo
+        )
+        
+        self.dateLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        self.dateLabel.text = "On Github since: \(userData.createdAt.convertToDisplayFormat())"
     }
     
     private func fetchUserInfo() {
@@ -133,9 +154,18 @@ class UserInfoController: UIViewController {
             
             switch result {
                 case .success(let userInfo):
-                    self.populateUIFromServer(userData: userInfo)
+                    ///
+                    /// this ui stuff should happen in the main thread
+                    ///
+                    DispatchQueue.main.async {
+                        self.populateUIFromServer(userData: userInfo)
+                    }
                 case .failure(let error):
-                    print(error.localizedDescription)
+                    self.presentGFAlertOnMainThread(
+                        title: "Something went wrong",
+                        message: error.rawValue,
+                        buttonTitle: "OK"
+                    )
             }
         }
     }
@@ -144,5 +174,36 @@ class UserInfoController: UIViewController {
 
     @objc private func dismissController() {
         dismiss(animated: true)
+    }
+}
+
+// MARK: - UserInfoControllerDelegate
+
+extension UserInfoController: UserInfoControllerDelegate {
+    ///
+    /// show safari view controller of the profile of the user
+    ///
+    func didTapGithubProfile(for user: UserModel) {
+        guard let url = URL(string: user.htmlUrl) else {
+            self.presentGFAlertOnMainThread(
+                title: "Invalid URL",
+                message: "The URL attached to this User is Invalid",
+                buttonTitle: "Ok"
+            )
+            return
+        }
+        
+        let safariController                        = SFSafariViewController(url: url)
+        safariController.preferredControlTintColor  = .systemGreen
+        
+        present(safariController, animated: true)
+    }
+    
+    ///
+    /// <# Comment #>
+    ///
+    func didTapGetFollowers(for user: UserModel) {
+        #warning("dismiss this vc")
+        #warning("tell followers list vc the new user")
     }
 }

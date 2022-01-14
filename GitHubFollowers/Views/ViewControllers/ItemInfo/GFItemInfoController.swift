@@ -17,6 +17,13 @@ class GFItemInfoController: UIViewController {
     
     var user: UserModel!
     
+    ///
+    /// this delegate will call the functions of the delegate protocol
+    /// through the 2 classes that inherit from this super class
+    /// by overriding the obj actionButtonTapped() function of this class
+    ///
+    weak var delegate: UserInfoControllerDelegate!
+    
     // MARK: - Initializer
     
     init(user: UserModel) {
@@ -38,13 +45,12 @@ class GFItemInfoController: UIViewController {
     
     // MARK: - Helper Functions
     
-    private func configureUI() {
+    private func configureBackground() {
         view.layer.cornerRadius = 18
         view.backgroundColor    = .secondarySystemBackground
-        
-        view.addSubview(stackView)
-        view.addSubview(actionButton)
-        
+    }
+    
+    private func configureStackView() {
         stackView.axis          = .horizontal
         stackView.distribution  = .fillEqually
         stackView.spacing       = 60
@@ -53,6 +59,12 @@ class GFItemInfoController: UIViewController {
         stackView.addArrangedSubview(itemInfoViewTwo)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    private func configureLayout() {
+        [stackView, actionButton].forEach { subView in
+            view.addSubview(subView)
+        }
         
         let padding: CGFloat = 20
         
@@ -67,5 +79,35 @@ class GFItemInfoController: UIViewController {
             actionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             actionButton.heightAnchor.constraint(equalToConstant: 44)
         ])
+    }
+    
+    private func configureActionButton() {
+        actionButton.addTarget(
+            self,
+            action: #selector(actionButtonTapped),
+            for: .touchUpInside
+        )
+    }
+    
+    private func configureUI() {
+        configureBackground()
+        
+        configureStackView()
+        
+        configureLayout()
+        
+        configureActionButton()
+    }
+    
+    // MARK: - Selectors
+
+    ///
+    /// this function will be overried inside the class that inherite from this one
+    /// [the repo item controller, and the follower item controller one]
+    ///
+    @objc func actionButtonTapped() {
+        ///
+        /// nothing is gonna be here cause this whole class is a generic one
+        ///
     }
 }
