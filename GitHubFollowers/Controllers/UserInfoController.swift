@@ -1,5 +1,4 @@
 import UIKit
-import SafariServices
 
 ///
 /// this protocol will establish a connection between this parent controller
@@ -23,6 +22,8 @@ class UserInfoController: UIViewController {
     // MARK: - Properties
 
     var username: String!
+    
+    weak var delegate: FollowersListControllerDelegate!
 
     // MARK: - LifeCycle
 
@@ -193,17 +194,38 @@ extension UserInfoController: UserInfoControllerDelegate {
             return
         }
         
-        let safariController                        = SFSafariViewController(url: url)
-        safariController.preferredControlTintColor  = .systemGreen
-        
-        present(safariController, animated: true)
+        self.presentSafariController(with: url)
     }
     
     ///
-    /// <# Comment #>
+    /// - this function will dismiss this current controller,
+    ///   then open the followers list controller to load the list of followers of the user we tapped
+    ///   on its get followers button when we was on this current controller before it got dismissed
+    ///
+    /// - this will happen by establishing a delegation connection between this controller
+    ///   and the followers list controller, when we tap on this function,
+    ///   the delegate protocol function will fire and upon that the function of the delegate
+    ///   inside the followers list controller will reset the followers list controller with the new username
+    ///  of the new user we got from this controller when the delegate function was fired
     ///
     func didTapGetFollowers(for user: UserModel) {
-        #warning("dismiss this vc")
-        #warning("tell followers list vc the new user")
+        ///
+        /// - if the user has no followers from this point then stop right here
+        ///
+        /// - there's no need to reset the followers list controller and do the network call
+        ///   and see if the user has followers or not
+        ///
+        guard user.followers != 0 else {
+            self.presentGFAlertOnMainThread(
+                title: "No Followers",
+                message: "This User has no Followers!",
+                buttonTitle: "Ok"
+            )
+            return
+        }
+        
+        delegate.didRequestFollowers(for: user.login)
+        
+        self.dismiss(animated: true)
     }
 }

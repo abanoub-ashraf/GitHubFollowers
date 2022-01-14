@@ -1,6 +1,19 @@
 import UIKit
 
 ///
+/// - this delegate will establish connection between the user info controller
+///   and this followers list controller
+///
+/// - when the didRequestFollowers() delegate function is tapped from inside
+///   the user info controller we want this  controller to be reset so that
+///   it can load a new array of followers of the nuew username we got from
+///   the user info controller
+///
+protocol FollowersListControllerDelegate: AnyObject {
+    func didRequestFollowers(for username: String)
+}
+
+///
 /// - this is the main section of the collection view
 ///
 /// - enums are hashable by default
@@ -264,15 +277,20 @@ extension FollowersListController: UICollectionViewDelegate {
         
         let userInfoController      = UserInfoController()
         userInfoController.username = follower.login
+        ///
+        /// set this class to be the listener to the deleagte protocol above
+        ///
+        userInfoController.delegate = self
+        
         let navController           = UINavigationController(rootViewController: userInfoController)
         
         present(navController, animated: true)
     }
 }
 
-// MARK: - UISearchResultsUpdating & UISearchBarDelegate
+// MARK: - UISearchResultsUpdating
 
-extension FollowersListController: UISearchResultsUpdating, UISearchBarDelegate {
+extension FollowersListController: UISearchResultsUpdating {
     
     ///
     /// this gets called every time i type a letter in the search bar
@@ -304,7 +322,11 @@ extension FollowersListController: UISearchResultsUpdating, UISearchBarDelegate 
         ///
         updateData(on: filteredFollowers)
     }
-    
+}
+
+// MARK: - UISearchBarDelegate
+
+extension FollowersListController: UISearchBarDelegate {
     ///
     /// when the cancel button is clicked we wanna load
     /// the original list of followers
@@ -315,5 +337,30 @@ extension FollowersListController: UISearchResultsUpdating, UISearchBarDelegate 
         ///
         isSearching = false
         updateData(on: followers)
+    }
+}
+
+// MARK: - FollowersListControllerDelegate
+
+extension FollowersListController: FollowersListControllerDelegate {
+    
+    ///
+    /// make the network call with the new user name after resetting everything on the screen
+    /// so that we can load new array of followers for the new user we got
+    ///
+    func didRequestFollowers(for username: String) {
+        self.username   = username
+        title           = username
+        page            = 1
+        
+        followers.removeAll()
+        filteredFollowers.removeAll()
+        
+        ///
+        /// make the collection view scrolls back up
+        ///
+        collectionView.setContentOffset(.zero, animated: true)
+        
+        getFollowersFromServer(username: username, page: page)
     }
 }
