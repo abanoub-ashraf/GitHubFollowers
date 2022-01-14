@@ -7,6 +7,7 @@ class UserInfoController: UIViewController {
     let headerView          = UIView()
     let itemViewOne         = UIView()
     let itemViewTwo         = UIView()
+    let dateLabel           = GFBodyLabel(textAlignment: .center)
     var itemViews: [UIView] = []
     
     // MARK: - Properties
@@ -45,7 +46,8 @@ class UserInfoController: UIViewController {
         itemViews = [
             headerView,
             itemViewOne,
-            itemViewTwo
+            itemViewTwo,
+            dateLabel
         ]
         
         for itemView in itemViews {
@@ -58,9 +60,6 @@ class UserInfoController: UIViewController {
             ])
         }
         
-        itemViewOne.backgroundColor = .systemGreen
-        itemViewTwo.backgroundColor = .systemBlue
-        
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             headerView.heightAnchor.constraint(equalToConstant: 180),
@@ -69,7 +68,10 @@ class UserInfoController: UIViewController {
             itemViewOne.heightAnchor.constraint(equalToConstant: itemHeight),
             
             itemViewTwo.topAnchor.constraint(equalTo: itemViewOne.bottomAnchor, constant: padding),
-            itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight)
+            itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight),
+            
+            dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
+            dateLabel.heightAnchor.constraint(equalToConstant: 18)
         ])
     }
     
@@ -95,26 +97,43 @@ class UserInfoController: UIViewController {
         childViewController.didMove(toParent: self)
     }
     
+    private func populateUIFromServer(userData: UserModel) {
+        ///
+        /// this ui stuff should happen in the main thread
+        ///
+        DispatchQueue.main.async {
+            ///
+            /// we will use the user info object we got from the server to populate
+            /// the user info header controller then add that header controller to
+            /// the header view we have in this current view controller
+            ///
+            self.add(
+                childViewController: GFUserInfoHeaderController(user: userData),
+                to: self.headerView
+            )
+            
+            self.add(
+                childViewController: GFRepoItemController(user: userData),
+                to: self.itemViewOne
+            )
+            
+            self.add(
+                childViewController: GFFollowerItemController(user: userData),
+                to: self.itemViewTwo
+            )
+            
+            self.dateLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+            self.dateLabel.text = "On Github since: \(userData.createdAt.convertToDisplayFormat())"
+        }
+    }
+    
     private func fetchUserInfo() {
         NetworkManager.shared.getUserInfo(for: username) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
                 case .success(let userInfo):
-                    ///
-                    /// this ui stuff should happen in the main thread
-                    ///
-                    DispatchQueue.main.async {
-                        ///
-                        /// we will use the user info object we got from the server to populate
-                        /// the user info header controller then add that header controller to
-                        /// the header view we have in this current view controller
-                        ///
-                        self.add(
-                            childViewController: GFUserInfoHeaderController(user: userInfo),
-                            to: self.headerView
-                        )
-                    }
+                    self.populateUIFromServer(userData: userInfo)
                 case .failure(let error):
                     print(error.localizedDescription)
             }

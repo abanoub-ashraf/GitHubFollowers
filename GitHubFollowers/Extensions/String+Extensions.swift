@@ -31,4 +31,24 @@ extension String {
         return components(separatedBy: .whitespaces).joined()
     }
     
+    ///
+    /// convert a given string format of a date into an actual date
+    ///
+    func convertToDate() -> Date? {
+        let dateFormatter           = DateFormatter()
+        dateFormatter.dateFormat    = "yyyy-MM-dd'T'HH:mm:ssZ"
+        dateFormatter.locale        = Locale(identifier: "en_US_POSIX")
+        dateFormatter.timeZone      = .current
+        
+        return dateFormatter.date(from: self)
+    }
+    
+    ///
+    /// get a date from a given string first using the function above
+    /// then convert that data into a string using the date extension function
+    ///
+    func convertToDisplayFormat() -> String {
+        guard let date = self.convertToDate() else { return "N/A" }
+        return date.convertToMonthYearFormat()
+    }
 }
